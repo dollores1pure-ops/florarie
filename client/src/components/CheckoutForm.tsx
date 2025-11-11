@@ -4,12 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Sparkles } from "lucide-react";
 import type { CartItem } from "@shared/schema";
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
   onSubmit: (formData: CheckoutFormData) => void;
   onBack: () => void;
+  isSubmitting?: boolean;
+  errorMessage?: string | null;
+  isStripeReady?: boolean;
 }
 
 export interface CheckoutFormData {
@@ -21,7 +26,20 @@ export interface CheckoutFormData {
   giftMessage?: string;
 }
 
-export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFormProps) {
+const ronFormatter = new Intl.NumberFormat("ro-RO", {
+  style: "currency",
+  currency: "RON",
+  minimumFractionDigits: 2,
+});
+
+export default function CheckoutForm({
+  cartItems,
+  onSubmit,
+  onBack,
+  isSubmitting = false,
+  errorMessage,
+  isStripeReady = true,
+}: CheckoutFormProps) {
   const [formData, setFormData] = useState<CheckoutFormData>({
     customerName: "",
     customerEmail: "",
@@ -33,11 +51,14 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
 
   const total = cartItems.reduce(
     (sum, item) => sum + parseFloat(item.product.price) * item.quantity,
-    0
+    0,
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isStripeReady || isSubmitting) {
+      return;
+    }
     onSubmit(formData);
   };
 
@@ -47,14 +68,31 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
         <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2" data-testid="text-checkout-title">
           Ultimul Pas spre Fericire 💝
         </h1>
-        <p className="text-muted-foreground text-lg mb-8">
+        <p className="text-muted-foreground text-lg mb-6">
           Suntem aproape gata să livrăm florile tale speciale
         </p>
+
+        {!isStripeReady && (
+          <Alert className="mb-6 border-primary/20 bg-primary/5">
+            <AlertTitle>Verificăm configurarea plăților</AlertTitle>
+            <AlertDescription>
+              Încercăm să te redirecționăm către pagina securizată Stripe. Dacă nu se încarcă, te rugăm să ne contactezi
+              telefonic pentru finalizarea comenzii.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {errorMessage && (
+          <Alert variant="destructive" className="mb-6 border-destructive/40 bg-destructive/5">
+            <AlertTitle>A apărut o eroare</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-8">
           <div>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <Card className="p-6">
+              <Card className="p-6 shadow-lg shadow-primary/5">
                 <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-contact-title">
                   Să Rămânem în Legătură ✉️
                 </h2>
@@ -94,7 +132,7 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 shadow-lg shadow-primary/5">
                 <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-delivery-title">
                   Unde Să Aducem Bucuria? 🚚
                 </h2>
@@ -133,66 +171,76 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
                 </div>
               </Card>
 
-              <div className="flex gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onBack}
-                  className="flex-1"
-                  data-testid="button-back"
-                >
-                  Înapoi
-                </Button>
-                <Button
-                  type="submit"
-                  className="flex-1"
-                  data-testid="button-submit-order"
-                >
-                  Trimite cu Dragoste 💗
-                </Button>
-              </div>
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onBack}
+                    className="flex-1"
+                    data-testid="button-back"
+                  >
+                    Înapoi
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    disabled={isSubmitting}
+                    data-testid="button-submit-order"
+                  >
+                    {isSubmitting ? "Se procesează..." : "Trimite cu Dragoste 💗"}
+                  </Button>
+                </div>
             </form>
           </div>
 
           <div>
-            <Card className="p-6 sticky top-24">
-              <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-order-summary">
-                Florile Tale Speciale 🌸
-              </h2>
-              <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <div key={item.product.id} className="flex gap-3" data-testid={`order-item-${item.product.id}`}>
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-16 h-16 object-cover rounded-md"
-                    />
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-sm">{item.product.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Cantitate: {item.quantity}
-                      </p>
-                      <p className="text-sm font-semibold text-primary">
-                        {(parseFloat(item.product.price) * item.quantity).toFixed(2)} RON
-                      </p>
+            <Card className="p-6 sticky top-24 space-y-6 shadow-xl shadow-primary/10">
+              <div>
+                <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-order-summary">
+                  Florile Tale Speciale 🌸
+                </h2>
+                <div className="space-y-4">
+                  {cartItems.map((item) => (
+                    <div key={item.product.id} className="flex gap-3" data-testid={`order-item-${item.product.id}`}>
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-16 h-16 object-cover rounded-md ring-1 ring-primary/20"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-sm">{item.product.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Cantitate: {item.quantity}
+                        </p>
+                        <p className="text-sm font-semibold text-primary">
+                          {ronFormatter.format(parseFloat(item.product.price) * item.quantity)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="border-t pt-4 mt-4 space-y-2">
+                    <div className="flex justify-between items-center text-sm">
+                      <span>Subtotal:</span>
+                      <span>{ronFormatter.format(total)}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span>Livrare:</span>
+                      <span className="text-accent-foreground">Gratuită</span>
+                    </div>
+                    <div className="flex justify-between items-center text-lg font-bold pt-2 border-t">
+                      <span>Total:</span>
+                      <span className="text-primary" data-testid="text-checkout-total">
+                        {ronFormatter.format(total)}
+                      </span>
                     </div>
                   </div>
-                ))}
-                <div className="border-t pt-4 mt-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm">Subtotal:</span>
-                    <span className="text-sm">{total.toFixed(2)} RON</span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm">Livrare:</span>
-                    <span className="text-sm text-accent-foreground">Gratuită</span>
-                  </div>
-                  <div className="flex justify-between items-center text-lg font-bold pt-2 border-t">
-                    <span>Total:</span>
-                    <span className="text-primary" data-testid="text-checkout-total">
-                      {total.toFixed(2)} RON
-                    </span>
-                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-lg bg-gradient-to-r from-primary/15 via-primary/10 to-accent/30 p-4 flex gap-3 items-start">
+                <Sparkles className="h-5 w-5 text-primary mt-0.5" />
+                <div className="text-sm text-primary">
+                  Florarii noștri livrează personal în aceeași zi în București și Ilfov, cu atenție pentru fiecare detaliu și mesaj.
                 </div>
               </div>
             </Card>
