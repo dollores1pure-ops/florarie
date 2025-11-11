@@ -44,16 +44,19 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
       <div className="max-w-6xl mx-auto">
-        <h1 className="font-serif text-3xl md:text-4xl font-bold mb-8" data-testid="text-checkout-title">
-          Finalizare Comandă
+        <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2" data-testid="text-checkout-title">
+          Ultimul Pas spre Fericire 💝
         </h1>
+        <p className="text-muted-foreground text-lg mb-8">
+          Suntem aproape gata să livrăm florile tale speciale
+        </p>
 
         <div className="grid lg:grid-cols-2 gap-8">
           <div>
             <form onSubmit={handleSubmit} className="space-y-6">
               <Card className="p-6">
                 <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-contact-title">
-                  Informații de Contact
+                  Să Rămânem în Legătură ✉️
                 </h2>
                 <div className="space-y-4">
                   <div>
@@ -93,7 +96,7 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
 
               <Card className="p-6">
                 <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-delivery-title">
-                  Livrare
+                  Unde Să Aducem Bucuria? 🚚
                 </h2>
                 <div className="space-y-4">
                   <div>
@@ -118,12 +121,12 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
                     />
                   </div>
                   <div>
-                    <Label htmlFor="message">Mesaj Cadou (Opțional)</Label>
+                    <Label htmlFor="message">Mesaj din Inimă 💌 (Opțional)</Label>
                     <Textarea
                       id="message"
                       value={formData.giftMessage}
                       onChange={(e) => setFormData({ ...formData, giftMessage: e.target.value })}
-                      placeholder="Scrie un mesaj personalizat..."
+                      placeholder="Scrie un mesaj personalizat plin de dragoste..."
                       data-testid="input-gift-message"
                     />
                   </div>
@@ -138,14 +141,14 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
                   className="flex-1"
                   data-testid="button-back"
                 >
-                  Înapoi la Coș
+                  Înapoi
                 </Button>
                 <Button
                   type="submit"
                   className="flex-1"
                   data-testid="button-submit-order"
                 >
-                  Continuă la Plată
+                  Trimite cu Dragoste 💗
                 </Button>
               </div>
             </form>
@@ -154,7 +157,7 @@ export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFo
           <div>
             <Card className="p-6 sticky top-24">
               <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-order-summary">
-                Sumar Comandă
+                Florile Tale Speciale 🌸
               </h2>
               <div className="space-y-4">
                 {cartItems.map((item) => (

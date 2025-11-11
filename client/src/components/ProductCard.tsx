@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { Heart } from "lucide-react";
 import type { Product } from "@shared/schema";
 
 interface ProductCardProps {
@@ -35,8 +35,8 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
             onClick={() => onAddToCart(product)}
             data-testid={`button-add-to-cart-${product.id}`}
           >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Adaugă
+            <Heart className="h-4 w-4 mr-2" />
+            Alege cu Dragoste
           </Button>
         </div>
       </div>

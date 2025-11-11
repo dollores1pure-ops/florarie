@@ -29,7 +29,7 @@ export default function CartDrawer({
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-lg flex flex-col" data-testid="drawer-cart">
         <SheetHeader>
-          <SheetTitle className="font-serif text-2xl" data-testid="text-cart-title">Coșul Tău</SheetTitle>
+          <SheetTitle className="font-serif text-2xl" data-testid="text-cart-title">Florile Tale 💐</SheetTitle>
         </SheetHeader>
 
         <div className="flex-1 overflow-auto py-6">
@@ -116,7 +116,7 @@ export default function CartDrawer({
               onClick={onCheckout}
               data-testid="button-checkout"
             >
-              Finalizează Comanda
+              Continuă cu Dragoste ❤️
             </Button>
           </SheetFooter>
         )}

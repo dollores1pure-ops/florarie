@@ -14,10 +14,10 @@ export default function Hero() {
       <div className="relative container mx-auto h-full flex items-center px-4 md:px-8">
         <div className="max-w-2xl text-white">
           <h2 className="font-serif text-5xl md:text-6xl font-bold mb-4" data-testid="text-hero-title">
-            Aranjamente Florale de Excepție
+            Flori cu Dragoste pentru Sufletul Tău ❤️
           </h2>
           <p className="text-lg md:text-xl mb-8 text-white/90" data-testid="text-hero-subtitle">
-            Creăm buchete unice pentru fiecare moment special din viața ta. Livrare rapidă și flori proaspete garantate.
+            Fiecare buchet este creat cu pasiune și grijă, pentru a aduce zâmbete și să celebreze momentele tale speciale.
           </p>
           <div className="flex gap-4">
             <Button

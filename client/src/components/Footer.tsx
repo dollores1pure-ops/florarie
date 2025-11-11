@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="font-serif text-xl font-bold">FloralArt</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Creăm aranjamente florale unice pentru fiecare moment special din viața ta.
+              Cu dragoste și pasiune, creăm aranjamente florale care aduc bucurie și zâmbete în fiecare zi. 🌺
             </p>
             <div className="flex gap-3">
               <a href="#" className="hover-elevate active-elevate-2 p-2 rounded-md" data-testid="link-facebook">

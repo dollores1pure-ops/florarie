@@ -12,10 +12,10 @@ export default function ProductGrid({ products, onAddToCart }: ProductGridProps)
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4" data-testid="text-section-title">
-            Cele Mai Populare Buchete
+            Buchete Create cu Iubire 💐
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto" data-testid="text-section-subtitle">
-            Descoperă aranjamentele noastre preferate, create cu pasiune și atenție la detalii
+            Fiecare floare este aleasă cu grijă pentru a transmite emoții și a crea amintiri de neuitat
           </p>
         </div>
 

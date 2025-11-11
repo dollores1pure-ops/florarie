@@ -21,64 +21,64 @@ import tropical from "@assets/generated_images/Tropical_bouquet_photo_a268ca88.p
 const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'Buchet Primăvară',
-    description: 'Aranjament vibrant cu trandafiri, lalele și verdeață proaspătă. Perfect pentru a aduce culoare și viață în orice spațiu.',
+    name: 'Buchet Primăvară Veselă',
+    description: 'Aranjament plin de viață cu trandafiri, lalele și verdeață proaspătă. Perfect pentru a aduce zâmbete și culoare în fiecare zi! 🌷',
     price: '159.99',
     image: springBouquet,
     category: 'Buchete',
   },
   {
     id: '2',
-    name: 'Trandafiri Roșii Premium',
-    description: 'Elegant buchet de trandafiri roșii premium. Ideal pentru momente romantice și declarații de dragoste.',
+    name: 'Dragoste Eternă',
+    description: 'Trandafiri roșii premium pentru a-ți exprima dragostea cea mai profundă. Fiecare petală spune "Te iubesc"! ❤️',
     price: '189.99',
     image: redRoses,
     category: 'Romantic',
   },
   {
     id: '3',
-    name: 'Mix Colorat Vesel',
-    description: 'Combinație veselă de floarea-soarelui, margarete și flori violet. Aduce bucurie și optimism.',
+    name: 'Bucurie și Zâmbete',
+    description: 'Combinație veselă de floarea-soarelui și margarete colorate care aduc optimism și bună dispoziție! ☀️',
     price: '129.99',
     image: colorfulMixed,
     category: 'Ocazii',
   },
   {
     id: '4',
-    name: 'Eleganță Albă',
-    description: 'Rafinat buchet alb cu trandafiri și crini pentru evenimente speciale și ceremonii elegante.',
+    name: 'Puritate și Eleganță',
+    description: 'Buchet alb rafinat cu trandafiri și crini, perfect pentru celebrări speciale și momente de neuitat. 🤍',
     price: '199.99',
     image: whiteElegant,
     category: 'Nuntă',
   },
   {
     id: '5',
-    name: 'Exotic Tropical',
-    description: 'Aranjament tropical vibrant cu flori exotice și verdeață luxuriantă. Unic și spectaculos.',
+    name: 'Pasiune Tropicală',
+    description: 'Aranjament exotic care aduce căldură și emoție! Flori vibrante care fac inima să tresară! 🌺',
     price: '249.99',
     image: tropical,
     category: 'Premium',
   },
   {
     id: '6',
-    name: 'Buchet Primăvară Deluxe',
-    description: 'Versiunea premium a aranjamentului de primăvară cu flori suplimentare și design îmbunătățit.',
+    name: 'Primăvară în Inimă',
+    description: 'Versiunea deluxe a fericirii de primăvară, cu mai multe flori pentru mai multă dragoste! 💕',
     price: '179.99',
     image: springBouquet,
     category: 'Buchete',
   },
   {
     id: '7',
-    name: 'Romantic Rose Garden',
-    description: 'Buchet luxos de trandafiri în nuanțe de roz și roșu. Exprimă dragoste și admirație.',
+    name: 'Grădina Romantică',
+    description: 'Buchet luxos de trandafiri în nuanțe de roz și roșu care exprimă admirație și afecțiune sinceră. 🌹',
     price: '219.99',
     image: redRoses,
     category: 'Romantic',
   },
   {
     id: '8',
-    name: 'Summer Sunshine',
-    description: 'Aranjament strălucitor perfect pentru vară, cu flori galbene și portocalii pline de energie.',
+    name: 'Razele Soarelui',
+    description: 'Aranjament strălucitor cu flori galbene și portocalii care radiază energie pozitivă și bucurie! 🌻',
     price: '139.99',
     image: colorfulMixed,
     category: 'Sezon',
@@ -125,7 +125,7 @@ function HomePage() {
   const handleCheckoutSubmit = (formData: CheckoutFormData) => {
     console.log('Checkout submitted:', formData);
     console.log('Cart items:', cartItems);
-    alert('Comanda va fi procesată prin Stripe în versiunea finală!');
+    alert('Mulțumim pentru comanda ta! 💝 Florile tale speciale vor fi livrate cu dragoste!');
   };
 
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
