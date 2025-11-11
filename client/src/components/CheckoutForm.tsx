@@ -1,0 +1,201 @@
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import type { CartItem } from "@shared/schema";
+
+interface CheckoutFormProps {
+  cartItems: CartItem[];
+  onSubmit: (formData: CheckoutFormData) => void;
+  onBack: () => void;
+}
+
+export interface CheckoutFormData {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  deliveryAddress: string;
+  deliveryDate: string;
+  giftMessage?: string;
+}
+
+export default function CheckoutForm({ cartItems, onSubmit, onBack }: CheckoutFormProps) {
+  const [formData, setFormData] = useState<CheckoutFormData>({
+    customerName: "",
+    customerEmail: "",
+    customerPhone: "",
+    deliveryAddress: "",
+    deliveryDate: "",
+    giftMessage: "",
+  });
+
+  const total = cartItems.reduce(
+    (sum, item) => sum + parseFloat(item.product.price) * item.quantity,
+    0
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="container mx-auto px-4 md:px-8 py-12">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="font-serif text-3xl md:text-4xl font-bold mb-8" data-testid="text-checkout-title">
+          Finalizare Comandă
+        </h1>
+
+        <div className="grid lg:grid-cols-2 gap-8">
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Card className="p-6">
+                <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-contact-title">
+                  Informații de Contact
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Nume Complet *</Label>
+                    <Input
+                      id="name"
+                      required
+                      value={formData.customerName}
+                      onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+                      data-testid="input-customer-name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      value={formData.customerEmail}
+                      onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
+                      data-testid="input-customer-email"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Telefon *</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      required
+                      value={formData.customerPhone}
+                      onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
+                      data-testid="input-customer-phone"
+                    />
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-delivery-title">
+                  Livrare
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="address">Adresă de Livrare *</Label>
+                    <Textarea
+                      id="address"
+                      required
+                      value={formData.deliveryAddress}
+                      onChange={(e) => setFormData({ ...formData, deliveryAddress: e.target.value })}
+                      data-testid="input-delivery-address"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="date">Data Livrării *</Label>
+                    <Input
+                      id="date"
+                      type="date"
+                      required
+                      value={formData.deliveryDate}
+                      onChange={(e) => setFormData({ ...formData, deliveryDate: e.target.value })}
+                      data-testid="input-delivery-date"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="message">Mesaj Cadou (Opțional)</Label>
+                    <Textarea
+                      id="message"
+                      value={formData.giftMessage}
+                      onChange={(e) => setFormData({ ...formData, giftMessage: e.target.value })}
+                      placeholder="Scrie un mesaj personalizat..."
+                      data-testid="input-gift-message"
+                    />
+                  </div>
+                </div>
+              </Card>
+
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onBack}
+                  className="flex-1"
+                  data-testid="button-back"
+                >
+                  Înapoi la Coș
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1"
+                  data-testid="button-submit-order"
+                >
+                  Continuă la Plată
+                </Button>
+              </div>
+            </form>
+          </div>
+
+          <div>
+            <Card className="p-6 sticky top-24">
+              <h2 className="font-serif text-xl font-semibold mb-4" data-testid="text-order-summary">
+                Sumar Comandă
+              </h2>
+              <div className="space-y-4">
+                {cartItems.map((item) => (
+                  <div key={item.product.id} className="flex gap-3" data-testid={`order-item-${item.product.id}`}>
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-sm">{item.product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Cantitate: {item.quantity}
+                      </p>
+                      <p className="text-sm font-semibold text-primary">
+                        {(parseFloat(item.product.price) * item.quantity).toFixed(2)} RON
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <div className="border-t pt-4 mt-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm">Subtotal:</span>
+                    <span className="text-sm">{total.toFixed(2)} RON</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm">Livrare:</span>
+                    <span className="text-sm text-accent-foreground">Gratuită</span>
+                  </div>
+                  <div className="flex justify-between items-center text-lg font-bold pt-2 border-t">
+                    <span>Total:</span>
+                    <span className="text-primary" data-testid="text-checkout-total">
+                      {total.toFixed(2)} RON
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
